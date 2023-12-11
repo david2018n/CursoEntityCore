@@ -1,4 +1,11 @@
+using CursoEntityCore.Datos;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//Configurar Conexion
+builder.Services.AddDbContext<ApplicationDbContext>(opciones =>
+opciones.UseSqlServer(builder.Configuration.GetConnectionString("ConexionSql")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
