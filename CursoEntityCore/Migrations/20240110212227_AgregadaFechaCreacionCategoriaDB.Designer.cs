@@ -4,6 +4,7 @@ using CursoEntityCore.Datos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CursoEntityCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240110212227_AgregadaFechaCreacionCategoriaDB")]
+    partial class AgregadaFechaCreacionCategoriaDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,9 +82,6 @@ namespace CursoEntityCore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Categoria_Id"), 1L, 1);
 
-                    b.Property<bool>("Activo")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime2");
 
@@ -93,15 +92,6 @@ namespace CursoEntityCore.Migrations
                     b.HasKey("Categoria_Id");
 
                     b.ToTable("Categoria");
-
-                    b.HasData(
-                        new
-                        {
-                            Categoria_Id = 30,
-                            Activo = true,
-                            FechaCreacion = new DateTime(2024, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Nombre = "Categoria 5"
-                        });
                 });
 
             modelBuilder.Entity("CursoEntityCore.Models.Etiqueta", b =>

@@ -4,6 +4,7 @@ using CursoEntityCore.Datos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CursoEntityCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240211015930_SiembraDatosCategoria")]
+    partial class SiembraDatosCategoria
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,6 +103,13 @@ namespace CursoEntityCore.Migrations
                             Activo = true,
                             FechaCreacion = new DateTime(2024, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Nombre = "Categoria 5"
+                        },
+                        new
+                        {
+                            Categoria_Id = 31,
+                            Activo = true,
+                            FechaCreacion = new DateTime(2024, 2, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Nombre = "Categoria 6"
                         });
                 });
 
