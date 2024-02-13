@@ -12,7 +12,7 @@ namespace CursoEntityCore.Models
         [Column("Titulo")]
         [Required(ErrorMessage ="El Titulo es Obligatorio")]
         [MaxLength(20)]
-        public string TipoArticulo { get; set; }
+        public string TituloArticulo { get; set; }
 
         [Required]
         [StringLength(500, ErrorMessage ="La descripcion no debe superar los 500 caracteres")]

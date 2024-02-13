@@ -41,8 +41,8 @@ namespace CursoEntityCore.Controllers
 
             //Interpolacion de Strings
             var id = 23;
-            var listaCategoria = _context.Categoria.FromSqlRaw($"select * from categoria where Categoria_id={id}").ToList();
-
+            //var listaCategoria = _context.Categoria.FromSqlRaw($"select * from categoria where Categoria_id={id}").ToList();
+            List<Categoria> listaCategoria = _context.Categoria.ToList();
 
             return View(listaCategoria);
         }
