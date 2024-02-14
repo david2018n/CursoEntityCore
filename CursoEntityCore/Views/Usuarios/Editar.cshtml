@@ -1,13 +1,16 @@
-﻿@model CursoEntityCore.Models.Categoria
+﻿@model CursoEntityCore.Models.Usuario
 @{
-    ViewData["Title"] = "Crear categoría";
+    ViewData["Title"] = "Editar usuario";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <br />
 <br />
-<h3 class="text-center">Crear una nueva categoría</h3>
-<form method="post" asp-action="Crear">
+<h3 class="text-center">Editar una usuario</h3>
+<form method="post" asp-action="Editar">
+    <!--Importante para editar-->
+    <input type="hidden" asp-for="Id" />
+
     <div class="row">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="col-12 mt-4">
@@ -22,30 +25,22 @@
             </div>
             <div class="row">
                 <div class="col-4">
-                    <label asp-for="FechaCreacion"></label>
+                    <label asp-for="Email"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="FechaCreacion" class="form-control" />
-                    <span asp-validation-for="FechaCreacion" class="text-danger"></span>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-4">
-                    <label asp-for="Activo"></label>
+                    <label asp-for="Direccion"></label>
                 </div>
                 <div class="col-8">
-                    <p>
-                        <input type="radio" asp-for="Activo" value="false" />
-                    Inactivo</p>
-
-                    <p>
-                        <input type="radio" asp-for="Activo" value="true" />
-                        Activo
-                    </p>
-                    <span asp-validation-for="Activo" class="text-danger"></span>
+                    <input asp-for="Direccion" class="form-control" />
+                    <span asp-validation-for="Direccion" class="text-danger"></span>
                 </div>
             </div>
-
         </div>
     </div>
     <div class="row mt-4">
@@ -53,7 +48,7 @@
             <a asp-action="Index">Volver a lista</a>
         </div>
         <div class="col-5 offset-4">
-            <button type="submit" class="btn btn-primary form-control">Crear</button>
+            <button type="submit" class="btn btn-primary form-control">Editar</button>
             &nbsp;
         </div>
     </div>
