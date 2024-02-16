@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CursoEntityCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231214192829_AgregarTablaDetalleUsuario")]
-    partial class AgregarTablaDetalleUsuario
+    [Migration("20240216035452_PrimeraMigracionFluentApi")]
+    partial class PrimeraMigracionFluentApi
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,9 +44,9 @@ namespace CursoEntityCore.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
-                    b.Property<string>("TipoArticulo")
+                    b.Property<string>("TituloArticulo")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
@@ -56,7 +56,22 @@ namespace CursoEntityCore.Migrations
 
                     b.HasIndex("Categoria_Id");
 
-                    b.ToTable("Tbl_Articulo");
+                    b.ToTable("Tbl_Articulo", (string)null);
+                });
+
+            modelBuilder.Entity("CursoEntityCore.Models.ArticuloEtiqueta", b =>
+                {
+                    b.Property<int>("Etiqueta_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Articulo_Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Etiqueta_Id", "Articulo_Id");
+
+                    b.HasIndex("Articulo_Id");
+
+                    b.ToTable("ArticuloEtiqueta");
                 });
 
             modelBuilder.Entity("CursoEntityCore.Models.Categoria", b =>
@@ -67,6 +82,12 @@ namespace CursoEntityCore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Categoria_Id"), 1L, 1);
 
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("date");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -74,6 +95,25 @@ namespace CursoEntityCore.Migrations
                     b.HasKey("Categoria_Id");
 
                     b.ToTable("Categoria");
+                });
+
+            modelBuilder.Entity("CursoEntityCore.Models.Etiqueta", b =>
+                {
+                    b.Property<int>("Etiqueta_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Etiqueta_Id"), 1L, 1);
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Titulo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Etiqueta_Id");
+
+                    b.ToTable("Etiqueta");
                 });
 
             modelBuilder.Entity("CursoEntityCore.Models.Usuario", b =>
@@ -84,19 +124,23 @@ namespace CursoEntityCore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("DetalleUsuario_ID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Direccion")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DetalleUsuario_ID")
+                        .IsUnique()
+                        .HasFilter("[DetalleUsuario_ID] IS NOT NULL");
 
                     b.ToTable("Usuario");
                 });
@@ -114,11 +158,9 @@ namespace CursoEntityCore.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Deporte")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Mascota")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DetalleUsuario_ID");
@@ -129,12 +171,60 @@ namespace CursoEntityCore.Migrations
             modelBuilder.Entity("CursoEntityCore.Models.Articulo", b =>
                 {
                     b.HasOne("CursoEntityCore.Models.Categoria", "Categoria")
-                        .WithMany()
+                        .WithMany("Articulo")
                         .HasForeignKey("Categoria_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Categoria");
+                });
+
+            modelBuilder.Entity("CursoEntityCore.Models.ArticuloEtiqueta", b =>
+                {
+                    b.HasOne("CursoEntityCore.Models.Articulo", "Articulo")
+                        .WithMany("ArticuloEtiqueta")
+                        .HasForeignKey("Articulo_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CursoEntityCore.Models.Etiqueta", "Etiqueta")
+                        .WithMany("ArticuloEtiqueta")
+                        .HasForeignKey("Etiqueta_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Articulo");
+
+                    b.Navigation("Etiqueta");
+                });
+
+            modelBuilder.Entity("CursoEntityCore.Models.Usuario", b =>
+                {
+                    b.HasOne("EntityFrameworkCoreDBFirs.Models.DetalleUsuario", "DetalleUsuario")
+                        .WithOne("Usuario")
+                        .HasForeignKey("CursoEntityCore.Models.Usuario", "DetalleUsuario_ID");
+
+                    b.Navigation("DetalleUsuario");
+                });
+
+            modelBuilder.Entity("CursoEntityCore.Models.Articulo", b =>
+                {
+                    b.Navigation("ArticuloEtiqueta");
+                });
+
+            modelBuilder.Entity("CursoEntityCore.Models.Categoria", b =>
+                {
+                    b.Navigation("Articulo");
+                });
+
+            modelBuilder.Entity("CursoEntityCore.Models.Etiqueta", b =>
+                {
+                    b.Navigation("ArticuloEtiqueta");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCoreDBFirs.Models.DetalleUsuario", b =>
+                {
+                    b.Navigation("Usuario");
                 });
 #pragma warning restore 612, 618
         }

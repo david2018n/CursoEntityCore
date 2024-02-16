@@ -42,7 +42,7 @@ namespace CursoEntityCore.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("TituloArticulo")
                         .IsRequired()
@@ -54,7 +54,7 @@ namespace CursoEntityCore.Migrations
 
                     b.HasIndex("Categoria_Id");
 
-                    b.ToTable("Tbl_Articulo");
+                    b.ToTable("Tbl_Articulo", (string)null);
                 });
 
             modelBuilder.Entity("CursoEntityCore.Models.ArticuloEtiqueta", b =>
@@ -84,7 +84,7 @@ namespace CursoEntityCore.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -93,15 +93,6 @@ namespace CursoEntityCore.Migrations
                     b.HasKey("Categoria_Id");
 
                     b.ToTable("Categoria");
-
-                    b.HasData(
-                        new
-                        {
-                            Categoria_Id = 30,
-                            Activo = true,
-                            FechaCreacion = new DateTime(2024, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Nombre = "Categoria 5"
-                        });
                 });
 
             modelBuilder.Entity("CursoEntityCore.Models.Etiqueta", b =>
@@ -113,7 +104,7 @@ namespace CursoEntityCore.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Etiqueta_Id"), 1L, 1);
 
                     b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("Titulo")
                         .HasColumnType("nvarchar(max)");
