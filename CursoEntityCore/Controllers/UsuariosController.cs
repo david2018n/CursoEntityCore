@@ -72,5 +72,44 @@ namespace CursoEntityCore.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public IActionResult Detalle(int? id)
+        {
+            if ( id== null)
+            {
+                return View();
+            }
+
+            var usuario = _context.Usuario.Include( u => u.DetalleUsuario).FirstOrDefault(u => u.Id == id);
+            if(usuario == null)
+            {
+                return NotFound();
+            }
+            return View(usuario);
+        }
+
+        [HttpPost]
+        public IActionResult AgregarDetalle(Usuario usuario)
+        {
+            if (usuario.DetalleUsuario.DetalleUsuario_ID == 0)
+            {
+                //Crear detalle de usuario
+                _context.DetalleUsuario.Add(usuario.DetalleUsuario);
+                _context.SaveChanges();
+
+                //Despues de crear Detalle, obtengo IdDetalle para actualizar usuario
+                var usuarioDB = _context.Usuario.FirstOrDefault(u => u.Id == usuario.Id);
+                if (usuarioDB != null)
+                {
+                    usuarioDB.DetalleUsuario_ID = usuario.DetalleUsuario.DetalleUsuario_ID;
+                    //_context.Usuario.Update(usuarioDB);
+                    _context.SaveChanges();
+                }
+            return RedirectToAction(nameof(Index));
+            }
+            return NotFound();
+
+        }
     }
 }
