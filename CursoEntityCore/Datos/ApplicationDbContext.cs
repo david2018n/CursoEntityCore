@@ -21,6 +21,9 @@ namespace CursoEntityCore.Datos
         public DbSet<Etiqueta> Etiqueta { get; set; }
         public DbSet<ArticuloEtiqueta> ArticuloEtiqueta { get; set; }
 
+        //Vista
+        public DbSet<CategoriaDesdeVista> CategoriaDesdeVista { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -85,12 +88,8 @@ namespace CursoEntityCore.Datos
                .WithMany(b => b.ArticuloEtiqueta).HasForeignKey(c => c.Etiqueta_Id);
 
 
-            //Fluent Api para Articulo Etiqueta
-            //modelBuilder.Entity<ArticuloEtiqueta>().HasKey(c => c.Etiqueta_Id);
-            //modelBuilder.Entity<ArticuloEtiqueta>().HasKey(c => c.Articulo_Id);
-
-
-
+            //carga desde vista sin llave primaria
+            modelBuilder.Entity<CategoriaDesdeVista>()
 
 
 
