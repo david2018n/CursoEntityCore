@@ -2,6 +2,7 @@
 using CursoEntityCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 
 namespace CursoEntityCore.Controllers
@@ -168,6 +169,85 @@ namespace CursoEntityCore.Controllers
             _context.Categoria.RemoveRange(categorias);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public void EjecucionDiferida()
+        {
+            //Se ejecuta Ejecucion Diferida en los siguientes casos:
+            //1: Cuando se hace ina iteracion sobre ellos:
+            var categorias = _context.Categoria;
+            foreach(var categoria in categorias)
+            {
+                var nombreCat = "";
+                nombreCat = categoria.Nombre;
+            }
+            //2: Cuando se llama a cualquera de los metodos: ToDictionary, ToList, ToArray
+            var categoria2 = _context.Categoria.ToList();
+
+            foreach(var categoria in categoria2)
+            {
+                var nombreCat = "";
+                nombreCat = categoria.Nombre;
+            }
+
+            //3: Cuando se llama cualquier metodo que retorna un solo objeto:
+            //first, Single, Count, Max, ...
+            var categoria3 = _context.Categoria;
+            var totalCategorias = categoria3.Count();
+            var totalCategorias2 = _context.Categoria.Count();
+            var pr = "";
+        }
+
+        [HttpGet]
+        public void TestIEnumerable()
+        {
+            //1: Codigo con IEnumerable
+            IEnumerable<Categoria> listaCategorias = _context.Categoria;
+            var categoriasActivas = listaCategorias.Where(a => a.Activo == true).ToList();
+            //2: Consulta resultante:
+            //SELECT [c].[Categoria_Id], [c].[Activo], [c].[FechaCreacion], [c].[Nombre]
+            //FROM[Categoria] AS[c]
+            //El filtro se genera en memoria en el cliente
+
+
+        }
+
+        [HttpGet]
+        public void TestIQueryable()
+        {
+            //1: Codigo con IQueryable
+            //IQueruable hereda de IEnumerable
+            //Todo lo que se puede hacer con IEnumerable se puede hacer con IQueryable
+            IQueryable<Categoria> listaCategorias = _context.Categoria;
+            var categoriasActivas = listaCategorias.Where(a => a.Activo == true).ToList();
+
+            //Se genera:
+            //SELECT[c].[Categoria_Id], [c].[Activo], [c].[FechaCreacion], [c].[Nombre]
+            //FROM[Categoria] AS[c]
+            //WHERE[c].[Activo] = CAST(1 AS bit)
+
+        }
+
+        [HttpGet]
+        public void TestUpdate()
+        {
+            var datosusuario = _context.Usuario.Include(a => a.DetalleUsuario).FirstOrDefault( d => d.Id == 2);
+            datosusuario.DetalleUsuario.Deporte = "Codear";
+            _context.Update(datosusuario);
+            _context.SaveChanges();
+            
+
+        }
+
+        [HttpGet]
+        public void TestAttach()
+        {
+            var datousuario = _context.Usuario.Include(u => u.DetalleUsuario).FirstOrDefault(a => a.Id == 2);
+            datousuario.DetalleUsuario.Deporte = "beber";
+            _context.Attach(datousuario);
+            _context.SaveChanges();
+
         }
 
     }
