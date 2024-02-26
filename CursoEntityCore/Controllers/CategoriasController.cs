@@ -250,5 +250,30 @@ namespace CursoEntityCore.Controllers
 
         }
 
+        //Metodo para llamar Vista SQL
+        public void ObtenerCategoriasVistaSql()
+        {
+            var categoriasvista = _context.CategoriaDesdeVista.ToList();
+
+            var categoriasvista2 = _context.CategoriaDesdeVista.FirstOrDefault();
+
+            var vista3 = _context.CategoriaDesdeVista.Where(a => a.Activo == true).ToList();
+        }
+
+        //Consulta de sql
+        public void ConsultaFromSql()
+        {
+
+            //Consulta directa, no es segura
+            var usuario = _context.Usuario.FromSqlRaw("select * from dbo.usuario").ToList();
+
+            //Consulta con params para evitar Sql injection
+            var idusuario = 1;
+            var usuario2 = _context.Usuario.FromSqlInterpolated($"select * from dbo.usuario where id = {idusuario}").ToList();
+
+            var usuarioPorProcedimiento = _context.Usuario.FromSqlInterpolated($"EXEC dbo.SpObtenerUsuarioId {idusuario}").ToList();
+
+        }
+
     }
 }

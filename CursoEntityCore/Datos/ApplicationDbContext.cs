@@ -89,7 +89,7 @@ namespace CursoEntityCore.Datos
 
 
             //carga desde vista sin llave primaria
-            modelBuilder.Entity<CategoriaDesdeVista>()
+            modelBuilder.Entity<CategoriaDesdeVista>().HasNoKey().ToView("obtenerCategorias");
 
 
 
